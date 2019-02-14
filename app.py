@@ -16,28 +16,25 @@ external_stylesheets = ['https://codepen.io/chriddyp/pen/bWLwgP.css']
 
 app = dash.Dash(__name__, external_stylesheets=external_stylesheets)
 
-# Path to project directory.
-path = "/home/xander/Projects/plotly/"
-
 # Embeddings.
-dualAll = np.load(path + "data/dimReduc/dualPCA/embeddedAll.npy")
-dualNum = np.load(path + "data/dimReduc/dualPCA/embeddedNum.npy")
-kernelAll = np.load(path + "data/dimReduc/kernelPCA/embeddedAll.npy")
-kernelNum = np.load(path + "data/dimReduc/kernelPCA/embeddedNum.npy")
+dualAll = np.load("data/dimReduc/dualPCA/embeddedAll.npy")
+dualNum = np.load("data/dimReduc/dualPCA/embeddedNum.npy")
+kernelAll = np.load("data/dimReduc/kernelPCA/embeddedAll.npy")
+kernelNum = np.load("data/dimReduc/kernelPCA/embeddedNum.npy")
 
 
 # Sample data.
-df = pd.read_csv(path + "data/cleaned/sampleData.csv", index_col=0)
+df = pd.read_csv("data/cleaned/sampleData.csv", index_col=0)
 
 # Lists and dictionaries.
 spops = ['AFR', 'AMR', 'EAS', 'EUR', 'SAS']
-spop2descrip = load_obj(path + "data/cleaned/spop2descrip.pkl")
+spop2descrip = load_obj("data/cleaned/spop2descrip.pkl")
 spop_colors = ['rgb(220,20,60)', 'rgb(30,144,255)', 'rgb(50,205,50)', 'rgb(255,69,0)', 'rgb(139,0,139)']
 spop2rgb = dict(zip(spops, spop_colors))
 
-pops = load_obj(path + "data/cleaned/pops.pkl")
-pop2descrip = load_obj(path + "data/cleaned/pop2descrip.pkl")
-pop2rgb = load_obj(path + "data/cleaned/pop2rgb.pkl")
+pops = load_obj("data/cleaned/pops.pkl")
+pop2descrip = load_obj("data/cleaned/pop2descrip.pkl")
+pop2rgb = load_obj("data/cleaned/pop2rgb.pkl")
 
 genders = ['male', 'female']
 gender2descrip = dict(zip(genders, ['Male', 'Female']))
