@@ -16,27 +16,25 @@ external_stylesheets = ['https://codepen.io/chriddyp/pen/bWLwgP.css']
 
 app = dash.Dash(__name__, external_stylesheets=external_stylesheets)
 
-# Path to project directory.
-path = "/home/xander/Projects/plotly/"
-
 # Embeddings.
-dualAll = np.load(path + "data/dimReduc/dualPCA/embeddedAll.npy")
-dualNum = np.load(path + "data/dimReduc/dualPCA/embeddedNum.npy")
-kernelAll = np.load(path + "data/dimReduc/kernelPCA/embeddedAll.npy")
-kernelNum = np.load(path + "data/dimReduc/kernelPCA/embeddedNum.npy")
+dualAll = np.load("data/dimReduc/dualPCA/embeddedAll.npy")
+dualNum = np.load("data/dimReduc/dualPCA/embeddedNum.npy")
+kernelAll = np.load("data/dimReduc/kernelPCA/embeddedAll.npy")
+kernelNum = np.load("data/dimReduc/kernelPCA/embeddedNum.npy")
+
 
 # Sample data.
-df = pd.read_csv(path + "data/cleaned/sampleData.csv", index_col=0)
+df = pd.read_csv("data/cleaned/sampleData.csv", index_col=0)
 
 # Lists and dictionaries.
 spops = ['AFR', 'AMR', 'EAS', 'EUR', 'SAS']
-spop2descrip = load_obj(path + "data/cleaned/spop2descrip.pkl")
+spop2descrip = load_obj("data/cleaned/spop2descrip.pkl")
 spop_colors = ['rgb(220,20,60)', 'rgb(30,144,255)', 'rgb(50,205,50)', 'rgb(255,69,0)', 'rgb(139,0,139)']
 spop2rgb = dict(zip(spops, spop_colors))
 
-pops = load_obj(path + "data/cleaned/pops.pkl")
-pop2descrip = load_obj(path + "data/cleaned/pop2descrip.pkl")
-pop2rgb = load_obj(path + "data/cleaned/pop2rgb.pkl")
+pops = load_obj("data/cleaned/pops.pkl")
+pop2descrip = load_obj("data/cleaned/pop2descrip.pkl")
+pop2rgb = load_obj("data/cleaned/pop2rgb.pkl")
 
 genders = ['male', 'female']
 gender2descrip = dict(zip(genders, ['Male', 'Female']))
@@ -47,30 +45,38 @@ gender2rgb = dict(zip(genders, gender_colors))
 app.layout = html.Div([
     html.Div([
         html.Div([
-            dcc.RadioItems(
+            html.Label('PCA Type'),
+            dcc.Dropdown(
                 id='pca-type',
                 options=[{'label': 'Dual', 'value': 'dual'},
                         {'label': 'Kernel', 'value': 'kernel'}],
                 value='dual'
             ),
-            dcc.RadioItems(
+        ], style={'width': '20%', 'display': 'inline-block', 'padding': '10px 20px 10px 20px', 'text-align': 'left'}),
+        html.Div([
+            html.Label('Include Sex Chromosomes?'),
+            dcc.Dropdown(
                 id='include-xy',
-                options=[{'label': 'Whole Genome', 'value': 'whole-genome'},
-                        {'label': 'Exclude X, Y', 'value': 'exclude-xy'}],
+                options=[{'label': 'Yes', 'value': 'whole-genome'},
+                        {'label': 'No', 'value': 'exclude-xy'}],
                 value='whole-genome'
             ),
-            dcc.RadioItems(
+        ], style={'width': '20%', 'display': 'inline-block', 'padding': '10px 20px 10px 20px', 'text-align': 'left'}),
+        html.Div([
+            html.Label('Group By'),
+            dcc.Dropdown(
                 id='group-by',
                 options=[{'label': 'Super Population', 'value': 'spop'},
                         {'label': 'Population', 'value': 'pop'},
                         {'label': 'Gender', 'value': 'gender'}],
                 value='spop'
             ),
-        ],
-        style={'width': '90%', 'display': 'inline-block'})
-    ]),
+        ], style={'width': '20%', 'display': 'inline-block', 'padding': '10px 20px 10px 20px', 'text-align': 'left'}),
+    ], style={'text-align': 'center'}),
 
-    dcc.Graph(id='genome-scatter')
+    dcc.Graph(id='genome-scatter', style={'height': '800'})
+
+
 ])
 
 
@@ -132,7 +138,8 @@ def update_graph(pca_type, include_xy, group_by):
     return {
         'data': traces,
         'layout': go.Layout(
-            margin={'l': 0, 'b': 0, 't': 0, 'r': 0}
+            margin={'l': 0, 'b': 0, 't': 0, 'r': 0},
+            legend=dict(x=0, y=1)
         )
     }
 

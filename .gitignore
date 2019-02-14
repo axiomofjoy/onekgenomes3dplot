@@ -1,5 +1,9 @@
-# Data
-data/
+# Uncleaned data.
+data/sampleData/
+
+# Instructed to ignore by Dash deployment tutorial.
+*.pyc
+.DS_Store
 
 # Byte-compiled / optimized / DLL files
 __pycache__/
